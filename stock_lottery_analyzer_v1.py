@@ -350,39 +350,26 @@ uploaded = st.file_uploader(
 )
 
 if uploaded:
-
     try:
-
         incoming = pd.read_csv(
             uploaded,
             dtype=str,
         )
-
         incoming = normalize_df(
             incoming
         )
-
         errors = validate_df(
             incoming
         )
-
         if errors:
-
             st.error(
                 "พบข้อมูลไม่ถูกต้อง"
             )
-
             for error in errors[:20]:
                 st.write(
                     f"• {error}"
                 )
-
         else:
-
-            old_count = len(
-                st.session_state.dataset
-            )
-
             combined = pd.concat(
                 [
                     st.session_state.dataset,
@@ -390,35 +377,27 @@ if uploaded:
                 ],
                 ignore_index=True,
             )
-
             combined, removed = (
                 remove_duplicates(
                     combined
                 )
             )
-
             st.session_state.dataset = (
                 normalize_df(combined)
             )
-
             new_count = len(
                 st.session_state.dataset
             )
-
             st.success(
                 f"นำเข้า {len(incoming)} แถว "
                 f"• ตัดข้อมูลซ้ำ {removed} แถว "
                 f"• รวมทั้งหมด {new_count} แถว"
             )
-
             df = st.session_state.dataset.copy()
-
-        except Exception as e:
-
-            st.error(
-                f"ไม่สามารถอ่านไฟล์ CSV ได้: {e}"
-            )
-                    
+    except Exception as e:
+        st.error(
+            f"ไม่สามารถอ่านไฟล์ CSV ได้: {e}"
+        )
 # ============================================================
 # FILTER
 # ============================================================
