@@ -168,6 +168,32 @@ h3 {
 
 }
 
+/* ============================================================
+   STREAMLIT HEADER / TOP BAR
+   ============================================================ */
+
+[data-testid="stHeader"] {
+    background: transparent;
+}
+
+/* เว้นพื้นที่ด้านบนไม่ให้ Header ของ App ชนกับ Streamlit toolbar */
+.block-container {
+    padding-top: 4rem !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    [data-testid="stHeader"] {
+        height: 2.75rem;
+    }
+
+    .block-container {
+        padding-top: 3.8rem !important;
+    }
+
+}
+
 </style>
 """, unsafe_allow_html=True)
 
