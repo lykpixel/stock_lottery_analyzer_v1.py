@@ -19,7 +19,7 @@ st.markdown("""
    ============================================================ */
 
 .block-container {
-    padding-top: 1rem;
+    /* padding-top: 1rem; */
     padding-bottom: 1rem;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -91,7 +91,7 @@ h3 {
 @media (max-width: 768px) {
 
     .block-container {
-        padding-top: 0.65rem;
+        /* padding-top: 0.65rem; */
         padding-bottom: 0.7rem;
         padding-left: 0.55rem;
         padding-right: 0.55rem;
