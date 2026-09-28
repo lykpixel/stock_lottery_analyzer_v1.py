@@ -9,6 +9,117 @@ st.set_page_config(
 )
 
 # ============================================================
+# MOBILE RESPONSIVE UI
+# ============================================================
+
+st.markdown("""
+<style>
+
+/* ---------- Global ---------- */
+
+.block-container {
+    padding-top: 1.2rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+h1 {
+    font-size: 1.65rem !important;
+    margin-bottom: 0.25rem !important;
+}
+
+h2 {
+    font-size: 1.3rem !important;
+}
+
+h3 {
+    font-size: 1.1rem !important;
+}
+
+p, label, div {
+    font-size: 0.95rem;
+}
+
+
+/* ---------- Metrics ---------- */
+
+[data-testid="stMetric"] {
+    padding: 0.45rem 0.55rem;
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 0.78rem !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 1.25rem !important;
+}
+
+
+/* ---------- Selectbox ---------- */
+
+[data-testid="stSelectbox"] {
+    margin-bottom: 0.25rem;
+}
+
+
+/* ---------- Tables ---------- */
+
+[data-testid="stDataFrame"] {
+    width: 100%;
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 768px) {
+
+    .block-container {
+        padding-top: 0.7rem;
+        padding-left: 0.65rem;
+        padding-right: 0.65rem;
+    }
+
+    h1 {
+        font-size: 1.35rem !important;
+    }
+
+    h2 {
+        font-size: 1.15rem !important;
+    }
+
+    h3 {
+        font-size: 1rem !important;
+    }
+
+    p, label, div {
+        font-size: 0.88rem;
+    }
+
+    [data-testid="stMetric"] {
+        padding: 0.3rem 0.4rem;
+    }
+
+    [data-testid="stMetricValue"] {
+        font-size: 1.05rem !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        font-size: 0.7rem !important;
+    }
+
+    /* ลดช่องว่างระหว่าง component */
+    [data-testid="stVerticalBlock"] {
+        gap: 0.45rem;
+    }
+
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ============================================================
 # STOCK LOTTERY ANALYZER v1
 # DATA ENGINE
 # ============================================================
@@ -336,7 +447,6 @@ st.caption(
     "และออกแบบให้เพิ่มข้อมูลย้อนหลังได้เรื่อย ๆ"
 )
 
-
 # ============================================================
 # SIDEBAR
 # ============================================================
@@ -366,18 +476,13 @@ with st.sidebar:
 
     st.divider()
 
-    st.write("### ตลาดที่รองรับ")
+    st.caption("📊 ตลาดที่รองรับ")
 
     for m in MARKETS:
-
-        st.write(
-            f"• {m}-AM {MARKETS[m]}เช้า"
+        st.caption(
+            f"{m}-AM — {MARKETS[m]}เช้า  |  "
+            f"{m}-PM — {MARKETS[m]}บ่าย"
         )
-
-        st.write(
-            f"• {m}-PM {MARKETS[m]}บ่าย"
-        )
-
 
 # ============================================================
 # DATASET
