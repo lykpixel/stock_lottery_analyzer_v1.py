@@ -914,7 +914,7 @@ status_display.columns = [
 ]
 
 st.dataframe(
-    status_df,
+    status_display,
     use_container_width=True,
     hide_index=True,
 )
