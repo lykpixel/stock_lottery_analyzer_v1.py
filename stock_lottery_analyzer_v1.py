@@ -553,6 +553,7 @@ if uploaded:
         st.error(
             f"ไม่สามารถอ่านไฟล์ CSV ได้: {e}"
         )
+        
 # ============================================================
 # FILTER
 # ============================================================
@@ -576,7 +577,6 @@ recent = filtered.head(
     window
 )
 
-
 # ============================================================
 # SUMMARY
 # ============================================================
@@ -587,32 +587,44 @@ st.subheader(
     f"{SESSIONS[session]}"
 )
 
-c1, c2, c3, c4 = st.columns(4)
-
-c1.metric(
-    "ข้อมูลทั้งหมด",
-    len(filtered),
+total_verified = int(
+    (
+        filtered["verified"]
+        == "VERIFIED"
+    ).sum()
 )
 
-c2.metric(
-    f"ย้อนหลัง {window}",
-    len(recent),
+# Desktop: 4 columns
+# Mobile: CSS จะช่วยให้แต่ละ Metric กระชับลง
+
+c1, c2, c3, c4 = st.columns(
+    4,
+    gap="small",
 )
 
-c3.metric(
-    "VERIFIED",
-    int(
-        (
-            filtered["verified"]
-            == "VERIFIED"
-        ).sum()
-    ),
-)
+with c1:
+    st.metric(
+        "ข้อมูลทั้งหมด",
+        len(filtered),
+    )
 
-c4.metric(
-    "ข้อมูลรวมทุกตลาด",
-    len(df),
-)
+with c2:
+    st.metric(
+        f"ย้อนหลัง {window}",
+        len(recent),
+    )
+
+with c3:
+    st.metric(
+        "VERIFIED",
+        total_verified,
+    )
+
+with c4:
+    st.metric(
+        "รวมทุกตลาด",
+        len(df),
+    )
 
 
 # ============================================================
@@ -639,7 +651,15 @@ else:
         ]
     )
 
+    # --------------------------------------------------------
+    # 3 ตัวบน
+    # --------------------------------------------------------
+
     with tab1:
+
+        st.caption(
+            f"ข้อมูลย้อนหลัง {len(recent)} งวด"
+        )
 
         st.dataframe(
             digit_frequency(
@@ -659,10 +679,18 @@ else:
             )
         )
 
-        p1, p2, p3 = st.columns(3)
+        # ใช้ columns บน Desktop
+        # และ CSS จะช่วยให้พื้นที่แสดงผลกระชับบน Mobile
+
+        p1, p2, p3 = st.columns(
+            3,
+            gap="small",
+        )
 
         with p1:
-            st.write("หลักร้อย")
+
+            st.caption("หลักร้อย")
+
             st.dataframe(
                 position_tables["หลักร้อย"],
                 use_container_width=True,
@@ -670,7 +698,9 @@ else:
             )
 
         with p2:
-            st.write("หลักสิบ")
+
+            st.caption("หลักสิบ")
+
             st.dataframe(
                 position_tables["หลักสิบ"],
                 use_container_width=True,
@@ -678,14 +708,24 @@ else:
             )
 
         with p3:
-            st.write("หลักหน่วย")
+
+            st.caption("หลักหน่วย")
+
             st.dataframe(
                 position_tables["หลักหน่วย"],
                 use_container_width=True,
                 hide_index=True,
             )
 
+    # --------------------------------------------------------
+    # 2 ตัวบน
+    # --------------------------------------------------------
+
     with tab2:
+
+        st.caption(
+            f"ข้อมูลย้อนหลัง {len(recent)} งวด"
+        )
 
         st.dataframe(
             digit_frequency(
@@ -695,7 +735,15 @@ else:
             hide_index=True,
         )
 
+    # --------------------------------------------------------
+    # 2 ตัวล่าง
+    # --------------------------------------------------------
+
     with tab3:
+
+        st.caption(
+            f"ข้อมูลย้อนหลัง {len(recent)} งวด"
+        )
 
         st.dataframe(
             digit_frequency(
@@ -704,7 +752,6 @@ else:
             use_container_width=True,
             hide_index=True,
         )
-
 
 # ============================================================
 # RECENT RESULTS
