@@ -67,8 +67,8 @@ p, label, div {
 
 [data-testid="stDataFrame"] {
     width: 100%;
+    font-size: 0.78rem;
 }
-
 
 /* ---------- Mobile ---------- */
 
@@ -113,10 +113,6 @@ p, label, div {
         gap: 0.45rem;
     }
 
-    /* จะช่วยลดขนาดตัวอักษรของตารางโดยไม่เปลี่ยนข้อมูล */
-    [data-testid="stDataFrame"] {
-        font-size: 0.78rem;
-    }
 }
 
 </style>
