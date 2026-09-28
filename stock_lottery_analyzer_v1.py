@@ -1,4 +1,4 @@
-from streamlit as st
+import streamlit as st
 import pandas as pd
 from io import BBytesIO
 st.set_page_config(
@@ -67,6 +67,7 @@ p, label, div {
 
 [data-testid="stDataFrame"] {
     width: 100%;
+    font-size: 0.78rem;
 }
 
 /* ---------- Mobile ---------- */
