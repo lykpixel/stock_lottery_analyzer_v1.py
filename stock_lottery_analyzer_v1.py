@@ -14,103 +14,156 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* ---------- Global ---------- */
+/* ============================================================
+   GLOBAL
+   ============================================================ */
 
 .block-container {
-    padding-top: 1.2rem;
+    padding-top: 1rem;
     padding-bottom: 1rem;
     padding-left: 1rem;
     padding-right: 1rem;
 }
 
+/* หัวข้อ */
 h1 {
-    font-size: 1.65rem !important;
+    font-size: 1.55rem !important;
     margin-bottom: 0.25rem !important;
 }
 
 h2 {
-    font-size: 1.3rem !important;
-}
-
-h3 {
-    font-size: 1.1rem !important;
-}
-
-p, label, div {
-    font-size: 0.95rem;
-}
-
-
-/* ---------- Metrics ---------- */
-
-[data-testid="stMetric"] {
-    padding: 0.45rem 0.55rem;
-}
-
-[data-testid="stMetricLabel"] {
-    font-size: 0.78rem !important;
-}
-
-[data-testid="stMetricValue"] {
     font-size: 1.25rem !important;
 }
 
-
-/* ---------- Selectbox ---------- */
-
-[data-testid="stSelectbox"] {
-    margin-bottom: 0.25rem;
+h3 {
+    font-size: 1.05rem !important;
 }
 
+/* ข้อความทั่วไป */
+[data-testid="stMarkdownContainer"] p {
+    font-size: 0.92rem;
+}
 
-/* ---------- Tables ---------- */
+/* ============================================================
+   METRIC
+   ============================================================ */
+
+[data-testid="stMetric"] {
+    padding: 0.45rem 0.5rem;
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 0.75rem !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 1.2rem !important;
+}
+
+/* ============================================================
+   SELECTBOX
+   ============================================================ */
+
+[data-testid="stSelectbox"] {
+    margin-bottom: 0.2rem;
+}
+
+/* ============================================================
+   DATAFRAME
+   ============================================================ */
 
 [data-testid="stDataFrame"] {
     width: 100%;
-    font-size: 0.78rem;
 }
 
-/* ---------- Mobile ---------- */
+/* ============================================================
+   BUTTON
+   ============================================================ */
+
+[data-testid="stButton"] button {
+    min-height: 2.4rem;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
 
 @media (max-width: 768px) {
 
     .block-container {
-        padding-top: 0.7rem;
-        padding-left: 0.65rem;
-        padding-right: 0.65rem;
+        padding-top: 0.65rem;
+        padding-bottom: 0.7rem;
+        padding-left: 0.55rem;
+        padding-right: 0.55rem;
     }
 
     h1 {
-        font-size: 1.35rem !important;
+        font-size: 1.3rem !important;
     }
 
     h2 {
-        font-size: 1.15rem !important;
+        font-size: 1.12rem !important;
     }
 
     h3 {
-        font-size: 1rem !important;
+        font-size: 0.98rem !important;
     }
 
-    p, label, div {
-        font-size: 0.88rem;
+    [data-testid="stMarkdownContainer"] p {
+        font-size: 0.86rem;
+    }
+
+    /* -------------------------
+       Metric 2 x 2 บนมือถือ
+       ------------------------- */
+
+    [data-testid="stHorizontalBlock"] {
+        gap: 0.4rem !important;
+        flex-wrap: wrap !important;
+    }
+
+    [data-testid="stHorizontalBlock"]
+    > [data-testid="column"] {
+        flex: 1 1 47% !important;
+        min-width: 47% !important;
     }
 
     [data-testid="stMetric"] {
-        padding: 0.3rem 0.4rem;
-    }
-
-    [data-testid="stMetricValue"] {
-        font-size: 1.05rem !important;
+        padding: 0.3rem 0.35rem;
     }
 
     [data-testid="stMetricLabel"] {
-        font-size: 0.7rem !important;
+        font-size: 0.68rem !important;
     }
 
-    /* ลดช่องว่างระหว่าง font-size */
-    [data-testid="stVerticalBlock"] {
-        gap: 0.45rem;
+    [data-testid="stMetricValue"] {
+        font-size: 1rem !important;
+    }
+
+    /* -------------------------
+       Tab
+       ------------------------- */
+
+    button[data-baseweb="tab"] {
+        font-size: 0.78rem !important;
+        padding-left: 0.45rem !important;
+        padding-right: 0.45rem !important;
+    }
+
+    /* -------------------------
+       File uploader
+       ------------------------- */
+
+    [data-testid="stFileUploader"] {
+        font-size: 0.82rem;
+    }
+
+    /* -------------------------
+       Expander
+       ------------------------- */
+
+    [data-testid="stExpander"] {
+        font-size: 0.85rem;
     }
 
 }
@@ -668,53 +721,40 @@ else:
             hide_index=True,
         )
 
-        st.write(
-            "### แยกตามตำแหน่ง"
-        )
+        st.write("### แยกตามตำแหน่ง")
 
-        position_tables = (
-            position_frequency(
-                recent["three_digit"]
-            )
-        )
+position_tables = position_frequency(
+    recent["three_digit"]
+)
 
-        # ใช้ columns บน Desktop
-        # และ CSS จะช่วยให้พื้นที่แสดงผลกระชับบน Mobile
+pos1, pos2, pos3 = st.tabs(
+    [
+        "หลักร้อย",
+        "หลักสิบ",
+        "หลักหน่วย",
+    ]
+)
 
-        p1, p2, p3 = st.columns(
-            3,
-            gap="small",
-        )
+with pos1:
+    st.dataframe(
+        position_tables["หลักร้อย"],
+        use_container_width=True,
+        hide_index=True,
+    )
 
-        with p1:
+with pos2:
+    st.dataframe(
+        position_tables["หลักสิบ"],
+        use_container_width=True,
+        hide_index=True,
+    )
 
-            st.caption("หลักร้อย")
-
-            st.dataframe(
-                position_tables["หลักร้อย"],
-                use_container_width=True,
-                hide_index=True,
-            )
-
-        with p2:
-
-            st.caption("หลักสิบ")
-
-            st.dataframe(
-                position_tables["หลักสิบ"],
-                use_container_width=True,
-                hide_index=True,
-            )
-
-        with p3:
-
-            st.caption("หลักหน่วย")
-
-            st.dataframe(
-                position_tables["หลักหน่วย"],
-                use_container_width=True,
-                hide_index=True,
-            )
+with pos3:
+    st.dataframe(
+        position_tables["หลักหน่วย"],
+        use_container_width=True,
+        hide_index=True,
+    )
 
     # --------------------------------------------------------
     # 2 ตัวบน
