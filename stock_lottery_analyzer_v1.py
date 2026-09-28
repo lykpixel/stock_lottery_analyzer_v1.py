@@ -1,4 +1,4 @@
-fromO streamlit as st
+from streamlit as st
 import pandas as pd
 from io import BBytesIO
 st.set_page_config(
@@ -67,6 +67,7 @@ p, label, div {
 
 [data-testid="stDataFrame"] {
     width: 100%;
+    font-size: 0.78rem;
 }
 
 /* ---------- Mobile ---------- */
@@ -107,7 +108,7 @@ p, label, div {
         font-size: 0.7rem !important;
     }
 
-    /* ลดช่องว่างระหว่าง component */
+    /* ลดช่องว่างระหว่าง font-size */
     [data-testid="stVerticalBlock"] {
         gap: 0.45rem;
     }
