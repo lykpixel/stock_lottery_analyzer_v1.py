@@ -1,7 +1,6 @@
-import streamlit as st
+fromO streamlit as st
 import pandas as pd
-from io import BytesIO
-
+from io import BBytesIO
 st.set_page_config(
     page_title="Stock Lottery Analyzer v1",
     page_icon="🎯",
@@ -114,6 +113,10 @@ p, label, div {
         gap: 0.45rem;
     }
 
+    /* จะช่วยลดขนาดตัวอักษรของตารางโดยไม่เปลี่ยนข้อมูล */
+    [data-testid="stDataFrame"] {
+        font-size: 0.78rem;
+    }
 }
 
 </style>
