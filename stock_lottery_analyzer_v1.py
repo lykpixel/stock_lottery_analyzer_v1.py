@@ -67,7 +67,6 @@ p, label, div {
 
 [data-testid="stDataFrame"] {
     width: 100%;
-    font-size: 0.78rem;
 }
 
 /* ---------- Mobile ---------- */
