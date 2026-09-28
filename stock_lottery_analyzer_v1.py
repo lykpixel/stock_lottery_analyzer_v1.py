@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from io import BBytesIO
+from io import StringIO
 st.set_page_config(
     page_title="Stock Lottery Analyzer v1",
     page_icon="🎯",
