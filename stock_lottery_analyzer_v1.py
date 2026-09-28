@@ -764,20 +764,29 @@ if recent.empty:
 
 else:
 
+    recent_display = recent[
+        [
+            "date",
+            "three_digit",
+            "two_digit_top",
+            "two_digit_bottom",
+            "verified",
+        ]
+    ].copy()
+
+    recent_display.columns = [
+        "วันที่",
+        "3 ตัวบน",
+        "2 ตัวบน",
+        "2 ตัวล่าง",
+        "สถานะ",
+    ]
+
     st.dataframe(
-        recent[
-            [
-                "date",
-                "three_digit",
-                "two_digit_top",
-                "two_digit_bottom",
-                "verified",
-            ]
-        ],
+        recent_display,
         use_container_width=True,
         hide_index=True,
     )
-
 
 # ============================================================
 # SIX MARKET STATUS
@@ -847,12 +856,28 @@ status_df = pd.DataFrame(
     status_rows
 )
 
+# ============================================================
+# MOBILE-FRIENDLY STATUS TABLE
+# ============================================================
+
+status_display = status_df.copy()
+
+status_display.columns = [
+    "กลุ่ม",
+    "ตลาด",
+    "รอบ",
+    "งวด",
+    "VERIFIED",
+    "CONFLICT",
+    "NEW",
+    "ล่าสุด",
+]
+
 st.dataframe(
     status_df,
     use_container_width=True,
     hide_index=True,
 )
-
 
 # ============================================================
 # DATA MANAGER
