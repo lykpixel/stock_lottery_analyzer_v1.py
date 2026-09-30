@@ -599,29 +599,27 @@ def remove_duplicates(df):
 
 
 # ============================================================
-# SESSION STATE
+# LOAD DATASET
 # ============================================================
 
 if "dataset" not in st.session_state:
 
     db_data = load_from_database()
 
-    if db_data.empty:
-
-        initial_data = normalize_df(
-            pd.DataFrame(
-                INITIAL_ROWS,
-                columns=COLUMNS,
-            )
+    initial_data = normalize_df(
+        pd.DataFrame(
+            INITIAL_ROWS,
+            columns=COLUMNS,
         )
+    )
 
-        save_to_database(initial_data)
+    # นำ INITIAL_ROWS เข้า SQLite
+    save_to_database(initial_data)
 
-        st.session_state.dataset = initial_data
+    # โหลดข้อมูลทั้งหมดกลับจาก SQLite
+    db_data = load_from_database()
 
-    else:
-
-        st.session_state.dataset = db_data
+    st.session_state.dataset = db_data
 
 # ============================================================
 # HEADER
