@@ -796,35 +796,35 @@ if save_data:
 
         else:
 
-    # บันทึกลง SQLite
-    save_to_database(new_row)
+            # บันทึกลง SQLite
+            save_to_database(new_row)
 
-    # อัปเดต dataset ใน session state
-    st.session_state.dataset = pd.concat(
-        [
-            existing,
-            new_row,
-        ],
-        ignore_index=True,
-    )
+            # อัปเดต dataset ใน session state
+            st.session_state.dataset = pd.concat(
+                [
+                    existing,
+                    new_row,
+                ],
+                ignore_index=True,
+            )
 
-    st.session_state.dataset = (
-        normalize_df(
-            st.session_state.dataset
-        )
-        .sort_values(
-            "date",
-            ascending=False,
-        )
-        .reset_index(drop=True)
-    )
+            st.session_state.dataset = (
+                normalize_df(
+                    st.session_state.dataset
+                )
+                .sort_values(
+                    "date",
+                    ascending=False,
+                )
+                .reset_index(drop=True)
+            )
 
-    st.success(
-        "✅ บันทึกผลเรียบร้อย "
-        f"• {entry_market}-{entry_session} "
-        f"• {entry_date.strftime('%Y-%m-%d')} "
-        "• SQLite"
-    )
+            st.success(
+                "✅ บันทึกผลเรียบร้อย "
+                f"• {entry_market}-{entry_session} "
+                f"• {entry_date.strftime('%Y-%m-%d')} "
+                "• SQLite"
+            )
 
 # ============================================================
 # DATASET
