@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from io import StringIO
+import sqlite3
 st.set_page_config(
     page_title="Stock Lottery Analyzer v1",
     page_icon="🎯",
@@ -230,6 +231,103 @@ STATUS = [
     "NEW",
     "UNVERIFIED",
 ]
+
+# ============================================================
+# SQLITE DATABASE
+# ============================================================
+
+DB_FILE = "stock_lottery.db"
+
+
+def init_database():
+    conn = sqlite3.connect(DB_FILE)
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS lottery_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT NOT NULL,
+            market TEXT NOT NULL,
+            session TEXT NOT NULL,
+            three_digit TEXT,
+            two_digit_top TEXT,
+            two_digit_bottom TEXT,
+            source TEXT,
+            verified TEXT
+        )
+    """)
+
+    conn.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS
+        idx_unique_draw
+        ON lottery_results(date, market, session)
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+def load_from_database():
+    conn = sqlite3.connect(DB_FILE)
+
+    df = pd.read_sql_query(
+        """
+        SELECT
+            date,
+            market,
+            session,
+            three_digit,
+            two_digit_top,
+            two_digit_bottom,
+            source,
+            verified
+        FROM lottery_results
+        ORDER BY date DESC
+        """,
+        conn,
+    )
+
+    conn.close()
+
+    return normalize_df(df)
+
+
+def save_to_database(df):
+    df = normalize_df(df)
+
+    conn = sqlite3.connect(DB_FILE)
+
+    for _, row in df.iterrows():
+
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO lottery_results (
+                date,
+                market,
+                session,
+                three_digit,
+                two_digit_top,
+                two_digit_bottom,
+                source,
+                verified
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                row["date"],
+                row["market"],
+                row["session"],
+                row["three_digit"],
+                row["two_digit_top"],
+                row["two_digit_bottom"],
+                row["source"],
+                row["verified"],
+            ),
+        )
+
+    conn.commit()
+    conn.close()
+
+init_database()
 
 # ============================================================
 # INITIAL DATA
