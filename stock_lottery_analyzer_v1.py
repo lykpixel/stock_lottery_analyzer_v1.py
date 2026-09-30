@@ -604,13 +604,24 @@ def remove_duplicates(df):
 
 if "dataset" not in st.session_state:
 
-    st.session_state.dataset = normalize_df(
-        pd.DataFrame(
-            INITIAL_ROWS,
-            columns=COLUMNS,
-        )
-    )
+    db_data = load_from_database()
 
+    if db_data.empty:
+
+        initial_data = normalize_df(
+            pd.DataFrame(
+                INITIAL_ROWS,
+                columns=COLUMNS,
+            )
+        )
+
+        save_to_database(initial_data)
+
+        st.session_state.dataset = initial_data
+
+    else:
+
+        st.session_state.dataset = db_data
 
 # ============================================================
 # HEADER
