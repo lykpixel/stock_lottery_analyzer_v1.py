@@ -327,6 +327,51 @@ def save_to_database(df):
     conn.commit()
     conn.close()
 
+def replace_database(df):
+    """
+    Replace SQLite data with the supplied DataFrame.
+    Used by Data Manager after validation.
+    """
+
+    df = normalize_df(df)
+
+    conn = sqlite3.connect(DB_FILE)
+
+    conn.execute(
+        "DELETE FROM lottery_results"
+    )
+
+    for _, row in df.iterrows():
+
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO lottery_results (
+                date,
+                market,
+                session,
+                three_digit,
+                two_digit_top,
+                two_digit_bottom,
+                source,
+                verified
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                row["date"],
+                row["market"],
+                row["session"],
+                row["three_digit"],
+                row["two_digit_top"],
+                row["two_digit_bottom"],
+                row["source"],
+                row["verified"],
+            ),
+        )
+
+    conn.commit()
+    conn.close()
+
 init_database()
 
 # ============================================================
