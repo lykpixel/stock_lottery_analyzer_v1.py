@@ -563,6 +563,171 @@ with st.sidebar:
         )
 
 # ============================================================
+# DATA ENTRY
+# ============================================================
+
+st.subheader("📝 บันทึกผลใหม่")
+
+with st.form("data_entry_form", clear_on_submit=False):
+
+    e1, e2 = st.columns(2, gap="small")
+
+    with e1:
+        entry_market = st.selectbox(
+            "ตลาด",
+            list(MARKETS.keys()),
+            format_func=lambda x:
+                f"{x} — {MARKETS[x]}",
+            key="entry_market",
+        )
+
+    with e2:
+        entry_session = st.selectbox(
+            "รอบ",
+            list(SESSIONS.keys()),
+            format_func=lambda x:
+                f"{x} — {SESSIONS[x]}",
+            key="entry_session",
+        )
+
+    entry_date = st.date_input(
+        "วันที่",
+        key="entry_date",
+    )
+
+    n1, n2, n3 = st.columns(
+        3,
+        gap="small",
+    )
+
+    with n1:
+        entry_three = st.text_input(
+            "3 ตัวบน",
+            max_chars=3,
+            placeholder="เช่น 069",
+            key="entry_three",
+        )
+
+    with n2:
+        entry_top2 = st.text_input(
+            "2 ตัวบน",
+            max_chars=2,
+            placeholder="เช่น 69",
+            key="entry_top2",
+        )
+
+    with n3:
+        entry_bottom2 = st.text_input(
+            "2 ตัวล่าง",
+            max_chars=2,
+            placeholder="เช่น 44",
+            key="entry_bottom2",
+        )
+
+    entry_source = st.text_input(
+        "แหล่งข้อมูล",
+        placeholder="เช่น raakaadee",
+        key="entry_source",
+    )
+
+    save_data = st.form_submit_button(
+        "💾 บันทึกผล",
+        use_container_width=True,
+    )
+
+
+if save_data:
+
+    # --------------------------------------------------------
+    # เตรียมข้อมูล
+    # --------------------------------------------------------
+
+    new_row = pd.DataFrame(
+        [[
+            entry_date.strftime("%Y-%m-%d"),
+            entry_market,
+            entry_session,
+            entry_three.strip(),
+            entry_top2.strip(),
+            entry_bottom2.strip(),
+            entry_source.strip(),
+            "NEW",
+        ]],
+        columns=COLUMNS,
+    )
+
+    new_row = normalize_df(new_row)
+
+    # --------------------------------------------------------
+    # ตรวจสอบข้อมูล
+    # --------------------------------------------------------
+
+    errors = validate_df(new_row)
+
+    if errors:
+
+        st.error("❌ ไม่สามารถบันทึกข้อมูลได้")
+
+        for error in errors:
+            st.write(f"• {error}")
+
+    else:
+
+        # ----------------------------------------------------
+        # ตรวจสอบข้อมูลซ้ำ
+        # ----------------------------------------------------
+
+        existing = normalize_df(
+            st.session_state.dataset
+        )
+
+        duplicate = existing[
+            (existing["date"] == new_row.iloc[0]["date"])
+            &
+            (existing["market"] == new_row.iloc[0]["market"])
+            &
+            (existing["session"] == new_row.iloc[0]["session"])
+        ]
+
+        if not duplicate.empty:
+
+            st.warning(
+                "⚠️ พบข้อมูลของวันที่ / ตลาด / รอบนี้อยู่แล้ว "
+                "จึงไม่บันทึกซ้ำ"
+            )
+
+        else:
+
+            # ------------------------------------------------
+            # เพิ่มข้อมูล
+            # ------------------------------------------------
+
+            st.session_state.dataset = pd.concat(
+                [
+                    existing,
+                    new_row,
+                ],
+                ignore_index=True,
+            )
+
+            st.session_state.dataset = (
+                normalize_df(
+                    st.session_state.dataset
+                )
+                .sort_values(
+                    "date",
+                    ascending=False,
+                )
+                .reset_index(drop=True)
+            )
+
+            st.success(
+                "✅ บันทึกผลเรียบร้อย "
+                f"• {entry_market}-{entry_session} "
+                f"• {entry_date.strftime('%Y-%m-%d')}"
+            )
+
+# ============================================================
 # DATASET
 # ============================================================
 
