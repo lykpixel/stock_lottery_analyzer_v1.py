@@ -1267,7 +1267,7 @@ with st.expander(
         key="data_editor",
     )
 
-    if st.button(
+        if st.button(
         "💾 บันทึกข้อมูล"
     ):
 
@@ -1286,31 +1286,34 @@ with st.expander(
             )
 
             for error in errors[:20]:
+
                 st.write(
                     f"• {error}"
                 )
 
         else:
 
-    edited, removed = (
-        remove_duplicates(
-            edited
-        )
-    )
+            edited, removed = (
+                remove_duplicates(
+                    edited
+                )
+            )
 
-    # บันทึกข้อมูลลง SQLite
-    replace_database(edited)
+            # บันทึกข้อมูลลง SQLite
+            replace_database(
+                edited
+            )
 
-    # โหลดข้อมูลกลับจาก SQLite
-    st.session_state.dataset = (
-        load_from_database()
-    )
+            # โหลดข้อมูลกลับจาก SQLite
+            st.session_state.dataset = (
+                load_from_database()
+            )
 
-    st.success(
-        f"บันทึกสำเร็จ "
-        f"• ตัดข้อมูลซ้ำ {removed} แถว"
-        f" • SQLite"
-    )
+            st.success(
+                f"บันทึกสำเร็จ "
+                f"• ตัดข้อมูลซ้ำ {removed} แถว "
+                f"• SQLite"
+            )
 
 
 # ============================================================
