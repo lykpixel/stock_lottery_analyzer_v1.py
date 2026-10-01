@@ -1292,23 +1292,25 @@ with st.expander(
 
         else:
 
-            edited, removed = (
-                remove_duplicates(
-                    edited
-                )
-            )
+    edited, removed = (
+        remove_duplicates(
+            edited
+        )
+    )
 
-            st.session_state.dataset = (
-                edited.sort_values(
-                    "date",
-                    ascending=False,
-                )
-            )
+    # บันทึกข้อมูลลง SQLite
+    replace_database(edited)
 
-            st.success(
-                f"บันทึกสำเร็จ "
-                f"• ตัดข้อมูลซ้ำ {removed} แถว"
-            )
+    # โหลดข้อมูลกลับจาก SQLite
+    st.session_state.dataset = (
+        load_from_database()
+    )
+
+    st.success(
+        f"บันทึกสำเร็จ "
+        f"• ตัดข้อมูลซ้ำ {removed} แถว"
+        f" • SQLite"
+    )
 
 
 # ============================================================
