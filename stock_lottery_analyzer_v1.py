@@ -1041,7 +1041,6 @@ with c4:
         len(df),
     )
 
-
 # ============================================================
 # ANALYSIS
 # ============================================================
@@ -1059,101 +1058,104 @@ else:
     )
 
     tab1, tab2, tab3 = st.tabs(
-    [
-        "3 ตัวบน",
-        "2 ตัวบน",
-        "2 ตัวล่าง",
-    ]
-)
-
-# --------------------------------------------------------
-# 3 ตัวบน
-# --------------------------------------------------------
-
-with tab1:
-
-    st.caption(
-        f"ข้อมูลย้อนหลัง {len(recent)} งวด"
-    )
-
-    st.dataframe(
-        digit_frequency(
-            recent["three_digit"]
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
-
-    st.write("### แยกตามตำแหน่ง")
-
-    position_tables = position_frequency(
-        recent["three_digit"]
-    )
-
-    pos1, pos2, pos3 = st.tabs(
         [
-            "หลักร้อย",
-            "หลักสิบ",
-            "หลักหน่วย",
+            "3 ตัวบน",
+            "2 ตัวบน",
+            "2 ตัวล่าง",
         ]
     )
 
-    with pos1:
+    # --------------------------------------------------------
+    # 3 ตัวบน
+    # --------------------------------------------------------
+
+    with tab1:
+
+        st.caption(
+            f"ข้อมูลย้อนหลัง {len(recent)} งวด"
+        )
+
         st.dataframe(
-            position_tables["หลักร้อย"],
+            digit_frequency(
+                recent["three_digit"]
+            ),
             use_container_width=True,
             hide_index=True,
         )
 
-    with pos2:
+        st.write("### แยกตามตำแหน่ง")
+
+        position_tables = position_frequency(
+            recent["three_digit"]
+        )
+
+        pos1, pos2, pos3 = st.tabs(
+            [
+                "หลักร้อย",
+                "หลักสิบ",
+                "หลักหน่วย",
+            ]
+        )
+
+        with pos1:
+
+            st.dataframe(
+                position_tables["หลักร้อย"],
+                use_container_width=True,
+                hide_index=True,
+            )
+
+        with pos2:
+
+            st.dataframe(
+                position_tables["หลักสิบ"],
+                use_container_width=True,
+                hide_index=True,
+            )
+
+        with pos3:
+
+            st.dataframe(
+                position_tables["หลักหน่วย"],
+                use_container_width=True,
+                hide_index=True,
+            )
+
+    # --------------------------------------------------------
+    # 2 ตัวบน
+    # --------------------------------------------------------
+
+    with tab2:
+
+        st.caption(
+            f"ข้อมูลย้อนหลัง {len(recent)} งวด"
+        )
+
         st.dataframe(
-            position_tables["หลักสิบ"],
+            digit_frequency(
+                recent["two_digit_top"]
+            ),
             use_container_width=True,
             hide_index=True,
         )
 
-    with pos3:
+    # --------------------------------------------------------
+    # 2 ตัวล่าง
+    # --------------------------------------------------------
+
+    with tab3:
+
+        st.caption(
+            f"ข้อมูลย้อนหลัง {len(recent)} งวด"
+        )
+
         st.dataframe(
-            position_tables["หลักหน่วย"],
+            digit_frequency(
+                recent["two_digit_bottom"]
+            ),
             use_container_width=True,
             hide_index=True,
         )
-
-# --------------------------------------------------------
-# 2 ตัวบน
-# --------------------------------------------------------
-
-with tab2:
-
-    st.caption(
-        "วิเคราะห์ 2 ตัวบน"
-    )
-
-    st.dataframe(
-        digit_frequency(
-            recent["two_digit_top"]
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
-
-# --------------------------------------------------------
-# 2 ตัวล่าง
-# --------------------------------------------------------
-
-with tab3:
-
-    st.caption(
-        "วิเคราะห์ 2 ตัวล่าง"
-    )
-
-    st.dataframe(
-        digit_frequency(
-            recent["two_digit_bottom"]
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
 
 # ============================================================
 # RECENT RESULTS
