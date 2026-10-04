@@ -327,6 +327,41 @@ def save_to_database(df):
     conn.commit()
     conn.close()
 
+# ============================================================
+# DATA SERVICE
+# ============================================================
+
+def load_dataset():
+    """
+    Load the current dataset from SQLite.
+    """
+
+    return load_from_database()
+
+
+def add_dataset_row(df):
+    """
+    Add new rows to the SQLite database.
+    """
+
+    df = normalize_df(df)
+
+    save_to_database(df)
+
+    return load_from_database()
+
+
+def sync_dataset(df):
+    """
+    Replace the SQLite dataset with the supplied dataset.
+    """
+
+    df = normalize_df(df)
+
+    replace_database(df)
+
+    return load_from_database()
+
 def replace_database(df):
     """
     Replace SQLite data with the supplied DataFrame.
