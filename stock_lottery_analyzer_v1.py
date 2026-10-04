@@ -1368,14 +1368,11 @@ with st.expander(
                 )
             )
 
-            # บันทึกข้อมูลลง SQLite
-            replace_database(
-                edited
-            )
-
-            # โหลดข้อมูลกลับจาก SQLite
+            # บันทึกผ่าน Data Service
             st.session_state.dataset = (
-                load_from_database()
+                sync_dataset(
+                    edited
+                )
             )
 
             st.success(
@@ -1383,7 +1380,6 @@ with st.expander(
                 f"• ตัดข้อมูลซ้ำ {removed} แถว "
                 f"• SQLite"
             )
-
 
 # ============================================================
 # EXPORT
